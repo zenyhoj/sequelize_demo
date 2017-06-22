@@ -23,12 +23,32 @@ var Article = connection.define('article', {
   title: {
     type: Sequelize.STRING,
     unique: true,
-    allowNull: false
+    allowNull: false,
+    validate:{
+      len: {
+        args: [10,150],
+        msg: 'Please enter a title from 10-150 characters'
+      }
+    }
   },
 
   body: {
-    type: Sequelize.TEXT
+    type: Sequelize.TEXT,
     // defaultValue: 'Coming soon'
+    // allowNull: false,
+    //check if first character of the body value is uppercase if it isnt throws and error
+    validate: {
+        startsWithUpper: function(bodyVal){
+          var first = bodyVal.charAt(0);
+          var startsWithUpper = first === first.toUpperCase();
+          if(!startsWithUpper){
+            throw new Error('First letter must be an uppercase');
+          }else{
+            //nothing happens
+          }
+        }
+      }
+
   }
   }, {
 //disable timestamps created automatically
@@ -36,17 +56,33 @@ var Article = connection.define('article', {
 });
 //this will connect to database and automatically creates table in the database
 //using promise for asynchronous event
-connection.sync({
-  //forcely drop the existing table if exist
-  force: true,
-  logging: console.log
-}).then(function(){
-// inserting a record
-  Article.create({
-    slug: 'demo-title',
-    title: 'Demo Title',
-    body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-  })
+connection
+    .sync({
+      //forcely drop the existing table if exist
+      force: true,
+      logging: console.log
+    })
+
+    .then(function(){
+    // inserting a record
+      Article.create({
+        slug: 'demo-title1',
+        title: 'Lorem ipsum dolor',
+        body: 'Lorem ipsum dolor sit amet,'
+
+    //displaying all articles
+    /*Article.findAll().then(articles=>{
+      console.log(articles.defaultValues);
+    });
+    */
+    //
+    //   Article.findbyId({where:{slug:'demo-title'}}).then(function(articles){
+    //   console.log(articles.dataValues);
+    })
+
+    .catch(function(error){
+      console.log(error);
+    });
 
 //finding a record
 // Article.findById(1).then(function(article){
@@ -56,8 +92,8 @@ connection.sync({
 //display all articles in the database
 //pluralize the table/modelname ex. from article -> articles
 //articles=> is equal to .then(function(articles){}); =>arrow function
-Article.findAll().then(articles=> {
-  console.log(articles.length);
-});
+// Article.findAll().then(articles=> {
+//   console.log(articles.length);
+// });
 
 });
