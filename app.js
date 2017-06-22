@@ -13,6 +13,13 @@ dialect: 'mysql'
 //property: Sequelize.DataType
 //});
 var Article = connection.define('article', {
+
+//custom primaryKey
+  slug:{
+    type: Sequelize.STRING,
+    primaryKey: true
+  },
+
   title: {
     type: Sequelize.STRING,
     unique: true,
@@ -26,19 +33,20 @@ var Article = connection.define('article', {
   }, {
 //disable timestamps created automatically
   timestamps: false
-
 });
 //this will connect to database and automatically creates table in the database
 //using promise for asynchronous event
 connection.sync({
   //forcely drop the existing table if exist
-  force: true
+  force: true,
+  logging: console.log
 }).then(function(){
-//inserting a record
-  // Article.create({
-  //   title: 'demo-title',
-  //   body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-  // })
+// inserting a record
+  Article.create({
+    slug: 'demo-title',
+    title: 'Demo Title',
+    body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+  })
 
 //finding a record
 // Article.findById(1).then(function(article){
