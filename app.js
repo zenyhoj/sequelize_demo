@@ -61,9 +61,7 @@ connection
       //forcely drop the existing table if exist
       force: true,
       logging: console.log
-    })
-
-    .then(function(){
+    }).then(function(){
     // inserting a record
       Article.create({
         slug: 'demo-title1',
@@ -78,9 +76,7 @@ connection
     //
     //   Article.findbyId({where:{slug:'demo-title'}}).then(function(articles){
     //   console.log(articles.dataValues);
-    })
-
-    .catch(function(error){
+    }).catch(function(error){
       console.log(error);
     });
 
