@@ -43,7 +43,7 @@ var Contacts = connection.define('contacts', {
     }
   }
 }, {
-  // timestamps: false
+  timestamps: false,
   hooks: {
     beforeValidate: function() {
       console.log('beforeValidate');
