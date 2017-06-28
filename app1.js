@@ -12,7 +12,8 @@ var Contacts = connection.define('contacts', {
   empId: {
     type: Sequelize.STRING,
     primaryKey: true,
-    allowNull: false
+    allowNull: false,
+    unique: true
 
   },
 
@@ -50,8 +51,8 @@ var Contacts = connection.define('contacts', {
     afterValidate: function() {
       console.log('afterValidate');
     },
-    afterCreate: function() {
-      console.log('contact successfully ceated');
+    afterCreate: function(res) {
+      console.log('ceated contact with id number', res.dataValues.empId);
     },
 
     beforeCreate: function() {
@@ -72,13 +73,27 @@ connection.sync({
 //uses Promise for asynchronous transaction
   .then(function() {
   //create the contacts
-  Contacts.create({
-    empId: '001-01-16',
-    firstName: 'joe',
+  Contacts.bulkCreate([{
+    empId: '001-01-11',
+    firstName: 'jo3',
     lastName: 'balingit',
     address: 'rizal',
-    email: 'joebalingit@gmail111.com'
-  }).catch(function(error) {
+    email: 'joebal1ingdsffdfdit@gmail111.com'
+  }, 
+  {empId: '001-01-22',
+    firstName: 'jemar',
+    lastName: 'balingit',
+    address: 'purok 6, rizal',
+    email: 'joebalsd1fsdingdsffdfdit@gmail111.com' 
+},
+
+{empId: '001-01-23',
+    firstName: 'heber',
+    lastName: 'balingit',
+    address: 'rizal',
+    email: 'joeba1lingdssdfdsfdsfffdfdit@gmail111.com'
+}])
+  .catch(function(error) {
     console.log(error);
 
   });
